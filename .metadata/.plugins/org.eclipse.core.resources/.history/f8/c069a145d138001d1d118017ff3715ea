@@ -1,0 +1,30 @@
+package com.pecuniaPay.registrationLogin.services;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import com.pecuniaPay.registrationLogin.entities.Login;
+import com.pecuniaPay.registrationLogin.entities.Registration;
+import com.pecuniaPay.registrationLogin.repositories.LoginRepository;
+import com.pecuniaPay.registrationLogin.repositories.RegistrationRepository;
+
+@Service
+public class UserDetailsServiceImpl implements UserDetailsService {
+	@Autowired
+	private LoginRepository loginRepository;
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		Login login = this.loginRepository.findByUserName(username);
+		if (login == null) {
+			System.out.println("Registration Not Found");
+			throw new UsernameNotFoundException("No Registration Found");
+		}
+
+		return login;
+	}
+
+}
